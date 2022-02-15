@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
+
 class CategoryController extends Controller
 {
     /**
@@ -15,6 +16,8 @@ class CategoryController extends Controller
     public function index()
     {
         //
+        $categoriesList = Category::all();
+        return view('categories.index', compact(['categoriesList']));
     }
 
     /**
@@ -25,6 +28,7 @@ class CategoryController extends Controller
     public function create()
     {
         //
+        return view('categories.create');
     }
 
     /**
@@ -35,7 +39,25 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //MAJ de la méthode store()
+        $request->validate([
+            'name' => 'required|min:2|max:255'
+        ]);
+  
+        $input = $request->all();
+        // $input = {
+            // name: "Oiseaux"
+    
+        // }
+        /*
+        //create the post
+        $input =  Category::create([
+            'name' => $request->name
+        ]);
+        */
+        Category::create($input);
+     
+        return redirect()->route('categories.index')->with('success','Espèce correctement ajoutée');
     }
 
     /**
@@ -58,6 +80,7 @@ class CategoryController extends Controller
     public function edit(Category $category)
     {
         //
+        return view('categories.edit', compact('category'));
     }
 
     /**
@@ -69,7 +92,19 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        $request->validate([
+            'name' => 'min:2|max:255'
+     
+        ]);
+  
+        $input = $request->all();
+        // $input = {
+            // title: "Ukraine",
+            // image: "53h4dh4fgh657hsdhiod"
+        // }
+
+        $category->update($input);
+        return redirect()->route('categories.index')->with('success','Modification effectuée');
     }
 
     /**
@@ -81,5 +116,8 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         //
+        $category->delete();
+        return redirect()->route('categories.index')
+        ->with('success','Espèce supprimée');
     }
 }

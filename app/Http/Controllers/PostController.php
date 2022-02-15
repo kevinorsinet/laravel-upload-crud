@@ -94,9 +94,11 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
+        $categories = Category::all();
+        // $category   = $post->category->name;
+        $category   = $post->category;
 
-        $category = $post->category->name;
-        return view('toto.edit', compact(['post', 'category']));
+        return view('toto.edit', compact(['post', 'category', 'categories']));
 
     }
 

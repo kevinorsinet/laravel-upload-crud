@@ -7,7 +7,16 @@
 		<label>Titre</label>
 		<input type="text" name="title" class="form-control" value="{{$post->title}}" />
 	</div>
-	<p>{{$category}}</p>
+	<div class="form-group mb-3">
+    <label>Espèce :</label>
+    <select class="form-control" name="category_id">
+			@foreach($categories as $item)
+      <option {{ ($item->id) == ($post->category_id) ? 'selected' : '' }} value="{{$item->id}}">{{$item->name}}</option>
+			
+			@endforeach
+    </select>
+	</div>
+	{{-- <p>{{$category->id }}</p> --}}
 	<div class="form-group mb-3">
 		<label>Image</label>
 		<input type="file" name="image" class="form-control" />
